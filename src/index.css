@@ -401,6 +401,27 @@ nav a span {
   bottom: 0;
 }
 
+#loading{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: #FFF897;
+  z-index: 99;
+  flex-direction: column;
+  animation: none !important;
+  transition: none !important;
+  border-radius: 10px;
+  -webkit-app-region: drag;
+}
+
+#loading img{
+  width: 100px;
+  margin: auto;
+}
+
 /*
   hone
 */

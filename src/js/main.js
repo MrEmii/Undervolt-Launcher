@@ -25,11 +25,13 @@ const account = new FileManager({
 var user = {};
 
 document.addEventListener("DOMContentLoaded", (e) => {
-    if (account.data.email) {
-        console.log("ACcount");
-
+    if(account.data.accessToken) {
+        updateData(account.data.accessToken);
     } else {
         currentPage.classList.add("visible")
+        setTimeout(() => {
+            document.getElementById("loading").style.display = "none";
+        }, 200)
     }
 });
 
@@ -71,7 +73,6 @@ function tryLogin(accessToken){
     alert("success", "Logged in", "Successfully log in! Welcome back")
     account.set('accessToken', accessToken);
     updateData(accessToken);
-    mount.setAttribute("data-login", "true")
 }
 
 function updateData(accessToken){
@@ -91,12 +92,16 @@ function updateData(accessToken){
                 user = json.user;
                 $('#ud-alias').text(user.alias)
                 $('#ud-pic').attr('src', user.image == "default" ? "http://undervolt.io/UVLogo.png" : user.image)
+                mount.setAttribute("data-login", "true")
                 changeView("home")
+                document.getElementById("loading").style.display = "none";
                 break
             }
             default: {
+                mount.setAttribute("data-login", "false")
                 account.set('accessToken', '');
                 changeView("signin")
+                document.getElementById("loading").style.display = "none";
             }
         }
     });
