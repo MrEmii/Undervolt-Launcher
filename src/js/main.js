@@ -71,7 +71,6 @@ function tryLogin(accessToken){
     alert("success", "Logged in", "Successfully log in! Welcome back")
     account.set('accessToken', accessToken);
     updateData(accessToken);
-    changeView("home")
     mount.setAttribute("data-login", "true")
 }
 
@@ -89,10 +88,10 @@ function updateData(accessToken){
     .then(json => {
         switch(json.code){
             case 200: {
-                user = JSON.stringify(json.user);
-                console.log("LOADED");
+                user = json.user;
                 $('#ud-alias').text(user.alias)
                 $('#ud-pic').attr('src', user.image == "default" ? "http://undervolt.io/UVLogo.png" : user.image)
+                changeView("home")
                 break
             }
             default: {
