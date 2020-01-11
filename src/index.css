@@ -79,6 +79,7 @@
   display: flex;
   position: relative;
   justify-content: start;
+  -webkit-app-region: no-drag;
 }
 
 .not-content {

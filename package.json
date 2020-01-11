@@ -47,6 +47,8 @@
     }
   },
   "dependencies": {
+    "electron-osx-prompt": "^1.4.1",
+    "electron-prompt": "^1.4.0",
     "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
     "install": "^0.13.0",

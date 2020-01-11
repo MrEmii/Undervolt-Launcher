@@ -2,6 +2,9 @@ const electron = require('electron');
 const { remote } = electron;
 const $ = require('jquery');
 const FileManager = require('./js/FileManager.js');
+const userPrompt = require('electron-osx-prompt');
+
+var prompt = require('electron-prompt');
 
 const navbar = document.getElementById("navbar");
 const mount = $(".mount")[0]
@@ -11,16 +14,15 @@ const notification = {
     title: document.getElementById("notification").children[1].children[0],
     description: document.getElementById("notification").children[1].children[1]
 }
+
 const account = new FileManager({
     configName: 'account',
     defaults: {
-        email: "",
-        username: "",
-        accesstoken: "",
-        joined: "",
-        photo: ""
+        accessToken: "",
     }
 });
+
+var user = {};
 
 document.addEventListener("DOMContentLoaded", (e) => {
     if (account.data.email) {
@@ -65,14 +67,111 @@ document.getElementById('minimize').addEventListener('click', () => {
     win.minimize();
 })
 
-document.getElementById("signinform").addEventListener("submit", (e) => {
-    document.getElementById("s-email").onerror = (e) => {
-        console.log("hola");
-    }
+function tryLogin(accessToken){
     alert("success", "Logged in", "Successfully log in! Welcome back")
-    e.preventDefault();
+    account.set('accessToken', accessToken);
+    updateData(accessToken);
     changeView("home")
     mount.setAttribute("data-login", "true")
+}
+
+function updateData(accessToken){
+    fetch("https://api.undervolt.io/api/user", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token: accessToken
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        switch(json.code){
+            case 200: {
+                user = JSON.stringify(json.user);
+                console.log("LOADED");
+                $('#ud-alias').text(user.alias)
+                $('#ud-pic').attr('src', user.image == "default" ? "http://undervolt.io/UVLogo.png" : user.image)
+                break
+            }
+            default: {
+                account.set('accessToken', '');
+                changeView("signin")
+            }
+        }
+    });
+}
+
+document.getElementById("signinform").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target)
+    fetch("https://api.undervolt.io/api/login", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            user: data.get("user"),
+            pass: data.get("pass")
+        })
+    })
+    .then(response => response.json())
+    .then(json => {
+        switch(json.code){
+            case 200:{
+                tryLogin(json.accessToken)
+                break;
+            }
+            case 530: {
+                prompt({
+                    title: 'UnderVolt',
+                    label: 'Please enter your verification code:',
+                    type: 'input'
+                }).then((user)=>{
+                    if(user != null && user != ''){
+                        fetch("https://api.undervolt.io/api/verify", {
+                            method: "POST",
+                            headers:{
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                code: user
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(json => {
+                            switch(json.code){
+                                case 200: {
+                                    setTimeout(()=>{
+                                        tryLogin(json.accessToken)
+                                    }, 500)
+                                    break;
+                                }
+                                case 510: {
+                                    alert("error", "Logged in", "Invalid Code");
+                                    break;
+                                }
+                                default: {
+                                    alert("error", "Logged in", "Invalid Code");
+                                }
+                            }
+                        })
+                    }
+                })
+                break;
+            }
+            default: {
+                alert("error", "Logged in", json.msg);
+                break;
+            }
+        }
+    }).catch(c => {
+        console.error(c)
+        account.set('accessToken', '');
+        alert("warn", "Logged in", "The servers are on maintenance");
+    })
+    e.preventDefault();
 })
 
 

@@ -29,8 +29,8 @@
         <div class="header">
           <div class="user">
             <a target="user-dropdown" class="dropdown-target"></a>
-            <img src="https://pbs.twimg.com/media/EKGni5pWsAAQNOs?format=jpg&name=900x900" alt="">
-            <h3>Welcome <span>Pene</span>!</h3>
+            <img id="ud-pic" src="http://undervolt.dev/UVLogo.png" alt="">
+            <h3>Welcome <span id="ud-alias"></span>!</h3>
             <div id="user-dropdown" class="dropdown">
 
             </div>
@@ -194,8 +194,8 @@
         <div class="signwwrap">
           <h2>Sign in</h2>
           <form id="signinform">
-            <input required type="email" placeholder="Email" name="" id="s-email">
-            <input required type="password" placeholder="Password" name="" id="s-password">
+            <input required type="text" placeholder="Username" name="user" id="s-email">
+            <input required type="password" placeholder="Password" name="pass" id="s-password">
             <button type="submit">LOGIN</button>
           </form>
         </div>
