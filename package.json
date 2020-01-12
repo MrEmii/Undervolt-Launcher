@@ -47,6 +47,7 @@
     }
   },
   "dependencies": {
+    "discord-rich-presence": "0.0.8",
     "electron-prompt": "^1.4.0",
     "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",

@@ -766,6 +766,70 @@ nav a span {
   cursor: pointer;
 }
 
+.gcard{
+  width: 200px;
+  height: 260px;
+  background: #000000;
+  border: 2px solid #FFF897;
+  border-radius: 7px;
+  box-shadow: 0 2px 4px 0 rgba(4,4,5,.3);
+  flex-shrink: 0;
+  margin: 0px 15px 15px 0px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  user-select: none;
+  transition: 100ms linear all;
+}
+
+.s-card{
+  display: flex;
+  width: 100%;
+  padding: 40px;
+  overflow-x: hidden;
+  flex-wrap: wrap;
+}
+
+.gcard:hover{
+  cursor: pointer;
+  border: 2px solid #ffe679;
+  transform: translateY(-2%);
+}
+
+.gcard .g-info{
+  position: absolute;
+  color: white;
+  bottom: 0;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(0, 0, 0, 0.37);
+  width: 100%;
+}
+
+.gcard .g-info .gt{
+  font-weight: 600;
+  margin: 5px 0 0 10px;
+  font-size: 11pt;
+}
+.gcard .g-info .go{
+  font-weight: 600;
+  margin: -6px 0 0 10px;
+  font-size: 9pt;
+  color: rgb(211, 211, 211);
+}
+.gcard .g-info .gs{
+  margin: 0 0 5px 10px;
+  font-size: 11pt;
+}
+
+.gcard .g-banner{
+  position: absolute;
+  width: auto;
+  height: 100%;
+  left: 50%;
+  transform: translate(-50%);
+  pointer-events: none;
+}
+
 @media screen and (max-width: 1204px) {
   .blog {
     width: 100%;

@@ -2,7 +2,7 @@ const electron = require('electron');
 const { remote } = electron;
 const $ = require('jquery');
 const FileManager = require('./js/FileManager.js');
-const userPrompt = require('electron-osx-prompt');
+const Discord = require('./js/Discord.js');
 
 var prompt = require('electron-prompt');
 
@@ -14,6 +14,8 @@ const notification = {
     title: document.getElementById("notification").children[1].children[0],
     description: document.getElementById("notification").children[1].children[1]
 }
+
+const discord = new Discord();
 
 const account = new FileManager({
     configName: 'account',
@@ -27,6 +29,7 @@ var user = {};
 document.addEventListener("DOMContentLoaded", (e) => {
     if(account.data.accessToken) {
         updateData(account.data.accessToken);
+        discord.setActivity();
     } else {
         currentPage.classList.add("visible")
         setTimeout(() => {
