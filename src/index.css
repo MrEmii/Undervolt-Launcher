@@ -830,6 +830,125 @@ nav a span {
   pointer-events: none;
 }
 
+.g-wrapper{
+  display: flex;
+  width: 100%;
+  padding: 40px;
+  overflow-x: hidden;
+  flex-wrap: no-wrap;
+  flex-direction: column;
+}
+
+.g-wrapper .g-desc{
+  width: 100%;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.g-desc .g-title{
+  position: absolute;
+  color: white;
+  left: 0;
+}
+
+.g-desc .g-version{
+  position: absolute;
+  color: white;
+  left: 60%;
+}
+
+.g-desc .g-time{
+  position: absolute;
+  color: white;
+  left: 77%;
+  text-align: center;
+}
+
+.g-wrapper .b-card{
+  width: 100%;
+  height: 60px;
+  background: rgb(17, 17, 17);
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: 200ms linear all;
+}
+
+.b-card .b-status{
+  margin: auto 15px;
+}
+
+.b-card .b-status .bt{
+  color: white;
+}
+
+.b-card .b-status .bs{
+  font-size: 10pt;
+  color: rgb(192, 192, 192);
+}
+
+.g-wrapper .b-card .b-banner{
+  position: relative;
+  width: 90px;
+  overflow: hidden;
+}
+
+.b-banner img{
+  position: absolute;
+  width: 100%;
+  height: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.b-info{
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  left: 60%;
+  color: white;
+  font-size: 11pt;
+}
+
+.b-info .bv{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);  
+}
+
+.b-info .btm{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.b-info .dwn{
+  position: absolute;
+  width: 60px;
+  height: 100%;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.b-info .dwn:hover{
+  cursor: pointer;
+  background: rgb(41, 41, 41);
+}
+
+
 @media screen and (max-width: 1204px) {
   .blog {
     width: 100%;
