@@ -20,6 +20,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+
 let mainWindow;
 
 var shoulQuit = app.requestSingleInstanceLock();
@@ -32,9 +33,10 @@ const createWindow = (w, h, xx, yy) => {
       nodeIntegration: true
     },
     width: w, height: h,
-    title: "UnderVolt Launcher", minWidth: 800, minHeight: 600, fullscreenable: false, fullscreenWindowTitle: false, fullscreen: false,
+    title: "UnderVolt", minWidth: 800, minHeight: 600, fullscreenable: false, fullscreenWindowTitle: false, fullscreen: false,
     titleBarStyle: "hidden", frame: false, transparent: true,
-    hasShadow: true, thickFrame: true
+    hasShadow: true, thickFrame: true,
+    icon: path.join(__dirname, "logo.png")
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
