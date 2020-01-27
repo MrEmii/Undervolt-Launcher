@@ -2,18 +2,20 @@ const electron = require('electron');
 const { remote } = electron;
 const $ = require('jquery');
 const FileManager = require('./js/FileManager.js');
-
+const path = require('path');
+const fs = require('fs');
+const io = require('socket.io-client');
+var socket = io('https://api.undervolt.io:4447')
 var prompt = require('electron-prompt');
-
 const navbar = document.getElementById("navbar");
 const mount = $(".mount")[0]
+const overlay = $(".overlays");
 var currentPage = document.getElementById(mount.getAttribute("data-current"))
 const notification = {
     body: document.getElementById("notification"),
     title: document.getElementById("notification").children[1].children[0],
     description: document.getElementById("notification").children[1].children[1]
 }
-
 
 const account = new FileManager({
     configName: 'account',
@@ -24,12 +26,40 @@ const account = new FileManager({
 
 var user = {};
 
+//
+//TODO: Load components to html
+//
+function loadComponents() {
+    var cmpt = path.join(__dirname, "components");
+    fs.readdir(cmpt, (er, fl) => {
+        fl.map((m) => {
+            var script = document.createElement('script');
+            script.src = path.join(cmpt, m);
+            document.head.appendChild(script);
+        })
+    })
+
+}
+
+
 document.addEventListener("DOMContentLoaded", (e) => {
-   Array.from($(".b-banner")).map((e) => {
-       generateGradient(e)
-   })
+    Array.from($(".b-banner")).map((e) => {
+        generateGradient(e)
+    })
     if (account.data.accessToken) {
-        updateData(account.data.accessToken);   
+        updateData(account.data.accessToken);
+        socket.on('connect', () => {
+            console.log("hola");
+            socket.emit('authenticate', { accessToken: account.data.accessToken });
+            socket.on('connection', (connect) => {
+                if (connect == false) {
+                    console.log("test");
+                } else {
+                    console.log("hola")
+                }
+            })
+
+        })
     } else {
         currentPage.classList.add("visible")
         setTimeout(() => {
@@ -37,6 +67,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
         }, 200)
     }
 });
+
 
 Array.from(navbar.children).forEach(children => {
     children.addEventListener("click", (e) => {
@@ -71,6 +102,27 @@ document.getElementById('minimize').addEventListener('click', () => {
     var win = remote.getCurrentWindow();
     win.minimize();
 })
+var selector = $("#hover-acc");
+var el, topPos;
+
+$(".px-list > .account-item").click(function () {
+    $(".px-list > .account-item.active").removeClass("active")
+    this.classList.add("active")
+})
+$(".px-list > .account-item").hover(function () {
+    el = $(this)
+    topPos = el.position().top;
+    selector.stop().animate({
+        top: topPos
+    }, "fast")
+
+},
+    function () {
+        selector.stop().animate({
+            top: $(".account-item.active").position().top
+        })
+    }
+)
 
 function tryLogin(accessToken) {
     alert("success", "Logged in", "Successfully log in! Welcome back")
@@ -96,7 +148,7 @@ function updateData(accessToken) {
                     $('#ud-alias').text(user.alias)
                     $('#ud-pic').attr('src', user.image == "default" ? "http://undervolt.io/UVLogo.png" : user.image)
                     mount.setAttribute("data-login", "true")
-                    changeView("friends")
+                    changeView("home")
                     document.getElementById("loading").style.display = "none";
                     break
                 }
@@ -183,6 +235,7 @@ document.getElementById("signinform").addEventListener("submit", (e) => {
 
 
 
+
 slide(document.getElementById("category"))
 
 function slide(items) {
@@ -238,7 +291,7 @@ function alert(type, title, description, code) {
 }
 
 function generateGradient(target) {
-    
+
     var gradients = [
         ["1CB5E0", "000851"],
         ["00C9FF", "92FE9D"],
@@ -257,70 +310,16 @@ function generateGradient(target) {
     ]
 
     var grad = gradients[Math.round(Math.random() * (13 - 0) + 0)]
-    target.style.backgroundImage = "linear-gradient(to right top, #"+ grad[0] +" , #"+ grad[1] +")"
+    target.style.backgroundImage = "linear-gradient(to right top, #" + grad[0] + " , #" + grad[1] + ")"
 }
 
 
-const inputField = document.querySelector('.chosen-value');
-const dropdown = document.querySelector('.value-list');
-const dropdownArray = [... document.querySelectorAll('.value-list li')];
-console.log(typeof dropdownArray)
+if (overlay.attr("data-modal") != "none") {
+    window.addEventListener("keydown", (e) => {
 
-inputField.focus(); // Demo purposes only
-let valueArray = [];
-dropdownArray.forEach(item => {
-  valueArray.push(item.textContent);
-});
+        if (e.keyCode === 27) {
 
-const closeDropdown = () => {
-  dropdown.classList.remove('open');
+            overlay.attr("data-modal", 'none')
+        }
+    })
 }
-
-inputField.addEventListener('input', () => {
-  dropdown.classList.add('open');
-  let inputValue = inputField.value.toLowerCase();
-  let valueSubstring;
-  if (inputValue.length > 0) {
-    for (let j = 0; j < valueArray.length; j++) {
-      if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
-        dropdownArray[j].classList.add('closed');
-      } else {
-        dropdownArray[j].classList.remove('closed');
-      }
-    }
-  } else {
-    for (let i = 0; i < dropdownArray.length; i++) {
-      dropdownArray[i].classList.remove('closed');
-    }
-  }
-});
-
-dropdownArray.forEach(item => {
-  item.addEventListener('click', (evt) => {
-    inputField.value = item.textContent;
-    dropdownArray.forEach(dropdown => {
-      dropdown.classList.add('closed');
-    });
-  });
-})
-
-inputField.addEventListener('focus', () => {
-   inputField.placeholder = 'Type to filter';
-   dropdown.classList.add('open');
-   dropdownArray.forEach(dropdown => {
-     dropdown.classList.remove('closed');
-   });
-});
-
-inputField.addEventListener('blur', () => {
-   inputField.placeholder = 'Select version';
-  dropdown.classList.remove('open');
-});
-
-document.addEventListener('click', (evt) => {
-  const isDropdown = dropdown.contains(evt.target);
-  const isInput = inputField.contains(evt.target);
-  if (!isDropdown && !isInput) {
-    dropdown.classList.remove('open');
-  }
-});
