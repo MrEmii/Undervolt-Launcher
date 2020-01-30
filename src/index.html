@@ -18,6 +18,9 @@
   </div>
   <div data-login="false" data-current="signin" class="mount">
     <nav>
+      <div class="offline">
+        <h2><i class='uil uil-wifi-slash'></i>without internet<i class='uil uil-wifi-slash'></i></h2>
+      </div>
       <div class="logo">
         <img src="http://undervolt.dev/EUVLogo.png" />
         <h2>UnderVolt</h2>
@@ -26,7 +29,7 @@
         <li class="active" data-src="home"><i class='uil uil-home-alt'></i><span>Home</span></li>
         <li data-src="store"><i class='uil uil-store-alt'></i><span>Store</span></li>
         <li data-src="games"><i class='uil uil-backpack'></i><span>Games</span></li>
-        <li data-src="friends"> <i class='uil uil-users-alt'></i><span>Friends</span></li>
+        <li data-src="friends"><i class='uil uil-minus-path'></i><span>PixelClient</span></li>
 
       </ul>
       <a id="support"><i class='uil uil-life-ring'></i><span>Support</span></a>
@@ -36,12 +39,15 @@
     <div class="app">
       <div id="home" class="wrapper ">
         <div class="header">
-          <div class="user">
-            <a target="user-dropdown" class="dropdown-target"></a>
+          <div class="user dropdown">
+            <a class="dropdown-action"></a>
             <img id="ud-pic" src="http://undervolt.dev/UVLogo.png" alt="">
             <h3>Welcome <span id="ud-alias"></span>!</h3>
-            <div id="user-dropdown" class="dropdown">
-
+            <div id="user-dropdown" class="dropdown-target">
+              <a><i class='uil uil-users-alt'></i> Friends</a>
+              <a><i class='uil uil-user'></i> Profile</a>
+              <hr>
+              <a><i class='uil uil-sign-out-alt'></i>Sign out</a>
             </div>
           </div>
         </div>
@@ -104,12 +110,21 @@
           <div class="blogWrapper">
             <div id="ttile" class="title">
               <h2>News</h2>
-
+              <div class="dropdown">
+                <a class="dropdown-action"></a>
+                <a>Filter <i class='uil uil-filter'></i></a>
+                <div class="dropdown-target top">
+                  <ul>
+                    <li>PixelClient</li>
+                    <li>Another game</li>
+                    <li>Undervolt</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="blog">
               <div class="postWrapper">
                 <div class="post">
-                  <img src="https://pbs.twimg.com/media/EKUGXMhU4AAafdj?format=jpg&name=small" alt="">
                   <div class="upp">
                     <h2>Torrejade marisco</h2>
                     <span>1hr ago</span>
@@ -126,7 +141,6 @@
 
               <div class="postWrapper">
                 <div class="post">
-                  <img src="https://pbs.twimg.com/media/EKUGXMhU4AAafdj?format=jpg&name=small" alt="">
                   <div class="upp">
                     <h2>Torrejade marisco</h2>
                     <span>1hr ago</span>
@@ -142,7 +156,6 @@
               </div>
               <div class="postWrapper">
                 <div class="post">
-                  <img src="https://pbs.twimg.com/media/EKUGXMhU4AAafdj?format=jpg&name=small" alt="">
                   <div class="upp">
                     <h2>Torrejade marisco</h2>
                     <span>1hr ago</span>
@@ -158,7 +171,6 @@
               </div>
               <div class="postWrapper">
                 <div class="post">
-                  <img src="https://pbs.twimg.com/media/EKUGXMhU4AAafdj?format=jpg&name=small" alt="">
                   <div class="upp">
                     <h2>Torrejade marisco</h2>
                     <span>1hr ago</span>

@@ -27,7 +27,7 @@ const account = new FileManager({
 var user = {};
 
 //
-//TODO: Load components to html
+//TODO: Load components in html
 //
 function loadComponents() {
     var cmpt = path.join(__dirname, "components");
@@ -38,11 +38,37 @@ function loadComponents() {
             document.head.appendChild(script);
         })
     })
-
 }
-
+function isOnline(){
+    return navigator.onLine;
+}
+window.onclick = function (event) {
+    if (!event.target.matches('.dropdown-action')) {
+        var dropdowns = document.getElementsByClassName("dropdown");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('down')) {
+                openDropdown.classList.remove('down');            
+            }
+        }
+    }
+}
+$(".dropdown-action").on('click', function() {
+    $(this).parent().toggleClass("down")
+    
+})
 
 document.addEventListener("DOMContentLoaded", (e) => {
+    setInterval(() => {
+        if(!isOnline()){
+            
+            $(".offline").css("display", "flex")
+            
+        }else{
+            $(".offline").css("display", "none")
+        }
+    }, 2000);
     Array.from($(".b-banner")).map((e) => {
         generateGradient(e)
     })
